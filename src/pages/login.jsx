@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useAuth } from '../features/auth/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '../features/auth/useAuth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -37,7 +37,7 @@ export default function Login() {
           <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Welcome back</h2>
           <p className="mt-2 text-gray-500">Log in to your account to continue</p>
         </div>
-        
+
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm text-center font-medium border border-red-100">
             {error}
@@ -56,7 +56,7 @@ export default function Login() {
               placeholder="you@example.com"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
@@ -65,7 +65,7 @@ export default function Login() {
               className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="********"
             />
           </div>
 
@@ -79,7 +79,7 @@ export default function Login() {
         </form>
 
         <p className="mt-8 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link to="/home/register" className="text-primary-600 font-semibold hover:underline">
             Sign up
           </Link>

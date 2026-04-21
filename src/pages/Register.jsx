@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useAuth } from '../features/auth/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '../features/auth/useAuth';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -28,7 +28,7 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
@@ -38,7 +38,7 @@ export default function Register() {
           <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Create an account</h2>
           <p className="mt-2 text-gray-500">Join BlogSpace to share your thoughts</p>
         </div>
-        
+
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm text-center font-medium border border-red-100">
             {error}
@@ -69,7 +69,7 @@ export default function Register() {
               placeholder="you@example.com"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
@@ -78,7 +78,7 @@ export default function Register() {
               className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="********"
             />
           </div>
 
