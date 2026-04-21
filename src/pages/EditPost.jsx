@@ -1,47 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import api from '../lib/axios';
 import { motion } from 'framer-motion';
+import api from '../lib/axios';
 import { ArrowLeft, Save } from 'lucide-react';
 
 export default function EditPost() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    category: 'Technology',
-    coverImage: '',
-    status: 'published'
-  });
+  const [formData, setFormData] = useState({});
 
   const { data: post, isLoading, error } = useQuery({
     queryKey: ['post-edit', id],
     queryFn: async () => {
-      // Backend uses ID for updates, but maybe we need to fetch by ID first
-      // Assuming GET /api/posts/id/:id exists, or we use getPosts and filter
-      // Let's check post.routes.js... it has router.route('/id/:id').put and .delete
-      // But no .get by ID. Let's see if we can get it by slug or add .get by ID.
-      // Actually, standard practice is to have GET /api/posts/:id.
-      // I'll check post.controller.js to see if I can add getPostById.
       const { data } = await api.get(`/posts/id/${id}`);
       return data;
     },
   });
 
-  useEffect(() => {
-    if (post) {
-      setFormData({
-        title: post.title,
-        content: post.content,
-        category: post.category,
-        coverImage: post.coverImage || '',
-        status: post.status || 'published'
-      });
-    }
-  }, [post]);
+  const resolvedFormData = {
+    title: formData.title ?? post?.title ?? '',
+    content: formData.content ?? post?.content ?? '',
+    category: formData.category ?? post?.category ?? 'Technology',
+    coverImage: formData.coverImage ?? post?.coverImage ?? '',
+    status: formData.status ?? post?.status ?? 'published',
+  };
 
   const updateMutation = useMutation({
     mutationFn: async (updatedData) => {
@@ -54,12 +37,12 @@ export default function EditPost() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMutation.mutate(formData);
+    updateMutation.mutate(resolvedFormData);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   if (isLoading) return <div className="text-center py-20 animate-pulse text-gray-400">Loading story details...</div>;
@@ -67,7 +50,7 @@ export default function EditPost() {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <button 
+      <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-gray-500 hover:text-primary-600 mb-8 transition-colors font-medium"
       >
@@ -76,16 +59,16 @@ export default function EditPost() {
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-8">Edit Your Story</h1>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">Title</label>
-            <input 
+            <input
               name="title"
-              type="text" 
+              type="text"
               required
               className="w-full text-2xl font-bold px-4 py-3 border-b-2 border-transparent hover:border-gray-200 focus:border-primary-500 outline-none transition-colors"
-              value={formData.title}
+              value={resolvedFormData.title}
               onChange={handleChange}
             />
           </div>
@@ -93,10 +76,10 @@ export default function EditPost() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-              <select 
+              <select
                 name="category"
                 className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary-500 outline-none font-medium"
-                value={formData.category}
+                value={resolvedFormData.category}
                 onChange={handleChange}
               >
                 <option value="Technology">Technology</option>
@@ -105,14 +88,14 @@ export default function EditPost() {
                 <option value="Finance">Finance</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Cover Image URL</label>
-              <input 
+              <input
                 name="coverImage"
-                type="url" 
+                type="url"
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary-500 outline-none font-medium"
-                value={formData.coverImage}
+                value={resolvedFormData.coverImage}
                 onChange={handleChange}
               />
             </div>
@@ -120,31 +103,31 @@ export default function EditPost() {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">Content</label>
-            <textarea 
+            <textarea
               name="content"
               required
               rows={12}
               className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-6 focus:ring-2 focus:ring-primary-500 outline-none leading-relaxed"
-              value={formData.content}
+              value={resolvedFormData.content}
               onChange={handleChange}
             />
           </div>
 
           <div className="pt-4 flex justify-end gap-4">
-             <button 
+            <button
               type="button"
               onClick={() => navigate(-1)}
               className="px-8 py-3 rounded-full font-medium text-gray-500 hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
-              disabled={updateMutation.isLoading}
+            <button
+              type="submit"
+              disabled={updateMutation.isPending}
               className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-full font-bold transition-colors shadow-lg shadow-primary-200 flex items-center gap-2 disabled:opacity-70"
             >
               <Save className="h-5 w-5" />
-              {updateMutation.isLoading ? 'Saving...' : 'Save Changes'}
+              {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

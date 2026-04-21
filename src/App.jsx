@@ -9,7 +9,7 @@ import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import PostDetail from './pages/PostDetail';
 import About from './pages/About';
-import { useAuth } from './features/auth/AuthContext';
+import { useAuth } from './features/auth/useAuth';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();

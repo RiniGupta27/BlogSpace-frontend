@@ -19,9 +19,9 @@ export default function About() {
         </div>
 
         <div className="rounded-3xl overflow-hidden shadow-sm h-80 w-full mb-12">
-          <img 
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200" 
-            alt="Team collaborating" 
+          <img
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200"
+            alt="Team collaborating"
             className="w-full h-full object-cover"
           />
         </div>

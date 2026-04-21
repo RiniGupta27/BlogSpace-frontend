@@ -7,7 +7,6 @@ export default function Splash() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Automatically redirect to the home page after 2.5 seconds
     const timer = setTimeout(() => {
       navigate('/home');
     }, 2500);
@@ -21,7 +20,7 @@ export default function Splash() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1.2 }}
         exit={{ opacity: 0, scale: 1.5 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 1, ease: 'easeOut' }}
       >
         <Logo />
       </motion.div>

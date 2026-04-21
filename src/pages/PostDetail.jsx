@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import api from '../lib/axios';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
+import api from '../lib/axios';
 
 export default function PostDetail() {
   const { slug } = useParams();
@@ -28,18 +28,18 @@ export default function PostDetail() {
         <div className="mb-6 flex items-center gap-2 text-sm font-semibold text-primary-600 uppercase tracking-widest">
           {post.category}
         </div>
-        
+
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-8">
           {post.title}
         </h1>
 
         <div className="flex items-center gap-4 text-sm text-gray-600 mb-10 pb-8 border-b border-gray-100">
           <div className="flex items-center gap-2">
-             {post.author?.avatar ? (
-                <img src={post.author.avatar} alt="author" className="h-10 w-10 rounded-full" />
-             ) : (
-                <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center"><User className="h-5 w-5 text-gray-400" /></div>
-             )}
+            {post.author?.avatar ? (
+              <img src={post.author.avatar} alt="author" className="h-10 w-10 rounded-full" />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center"><User className="h-5 w-5 text-gray-400" /></div>
+            )}
             <span className="font-semibold text-gray-900">{post.author?.name}</span>
           </div>
           <span className="text-gray-300">|</span>
@@ -55,7 +55,7 @@ export default function PostDetail() {
           </div>
         )}
 
-        <div 
+        <div
           className="prose prose-lg prose-primary max-w-none text-gray-700 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
