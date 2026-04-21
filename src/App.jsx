@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
-import Login from './pages/Login';
+import Login from './pages/login';
 import Register from './pages/Register';
 import Splash from './pages/Splash';
 import Dashboard from './pages/Dashboard';
