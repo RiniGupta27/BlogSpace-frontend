@@ -22,7 +22,13 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
+
+    // Skip token refresh for auth routes — let login/register handle their own errors
+    const isAuthRoute = originalRequest.url?.includes('/auth/login') ||
+                        originalRequest.url?.includes('/auth/register') ||
+                        originalRequest.url?.includes('/auth/refresh-token');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true;
       try {
         const { data } = await axios.post(
@@ -34,7 +40,7 @@ api.interceptors.response.use(
         api.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh token failed -> clear user state (optional: trigger event)
+        // Refresh token failed -> clear session and redirect to login
         localStorage.removeItem('accessToken');
         window.location.href = '/home/login';
         return Promise.reject(refreshError);

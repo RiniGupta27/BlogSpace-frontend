@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Check if user is logged in by verifying local token + fetching profile
       const token = localStorage.getItem('accessToken');
       if (!token) {
         dispatch({ type: 'SET_LOADING', payload: false });
